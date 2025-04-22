@@ -32,7 +32,8 @@ def create_contour_plot(distribution, x_range, y_range, resolution=100):
     
     return x_grid, y_grid, z_values
 
-def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples, 
+def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
+                           mh_proposals, gibbs_proposals, sa_proposals,
                            mh_accepts, gibbs_accepts, sa_accepts, trail_length):
     """
     Create animation frames for the MCMC visualization.
@@ -100,16 +101,28 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
-        frame_data.append(
-            go.Scatter(
-                x=[mh_samples[i, 0]],
-                y=[mh_samples[i, 1]],
-                mode='markers',
-                marker=dict(color='red', size=10),
-                showlegend=False
+        # Add proposed point (will be the current point at this iteration if accepted)
+        if i < n_iterations:  # Make sure we don't go out of bounds
+            frame_data.append(
+                go.Scatter(
+                    x=[mh_proposals[i-1, 0]],
+                    y=[mh_proposals[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
             )
-        )
+        else:
+            # Last iteration, just show the final point
+            frame_data.append(
+                go.Scatter(
+                    x=[mh_samples[i, 0]],
+                    y=[mh_samples[i, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
+            )
         
         # Add trail data for Gibbs Sampling
         colors = []
@@ -140,16 +153,28 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
-        frame_data.append(
-            go.Scatter(
-                x=[gibbs_samples[i, 0]],
-                y=[gibbs_samples[i, 1]],
-                mode='markers',
-                marker=dict(color='red', size=10),
-                showlegend=False
+        # Add proposed point (will be the current point at this iteration if accepted)
+        if i < n_iterations:  # Make sure we don't go out of bounds
+            frame_data.append(
+                go.Scatter(
+                    x=[gibbs_proposals[i-1, 0]],
+                    y=[gibbs_proposals[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
             )
-        )
+        else:
+            # Last iteration, just show the final point
+            frame_data.append(
+                go.Scatter(
+                    x=[gibbs_samples[i, 0]],
+                    y=[gibbs_samples[i, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
+            )
         
         # Add trail data for Simulated Annealing
         colors = []
@@ -180,16 +205,28 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
-        frame_data.append(
-            go.Scatter(
-                x=[sa_samples[i, 0]],
-                y=[sa_samples[i, 1]],
-                mode='markers',
-                marker=dict(color='red', size=10),
-                showlegend=False
+        # Add proposed point (will be the current point at this iteration if accepted)
+        if i < n_iterations:  # Make sure we don't go out of bounds
+            frame_data.append(
+                go.Scatter(
+                    x=[sa_proposals[i-1, 0]],
+                    y=[sa_proposals[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
             )
-        )
+        else:
+            # Last iteration, just show the final point
+            frame_data.append(
+                go.Scatter(
+                    x=[sa_samples[i, 0]],
+                    y=[sa_samples[i, 1]],
+                    mode='markers',
+                    marker=dict(color='red', size=10),
+                    showlegend=False
+                )
+            )
         
         # Create frame
         frames.append(
