@@ -60,7 +60,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and mh_accepts[j-1]:  # Accepted points
-                colors.append('rgba(31, 119, 180, 0.9)')
+                colors.append('rgba(44, 160, 44, 0.9)')  # Green for MH (leftmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
@@ -91,7 +91,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and gibbs_accepts[j-1]:  # Accepted points
-                colors.append('rgba(255, 127, 14, 0.9)')
+                colors.append('rgba(255, 127, 14, 0.9)')  # Orange for Gibbs (middle)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
@@ -122,7 +122,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and sa_accepts[j-1]:  # Accepted points
-                colors.append('rgba(44, 160, 44, 0.9)')
+                colors.append('rgba(31, 119, 180, 0.9)')  # Blue for SA (rightmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
