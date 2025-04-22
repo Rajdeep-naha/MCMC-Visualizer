@@ -34,7 +34,8 @@ def create_contour_plot(distribution, x_range, y_range, resolution=100):
 
 def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                            mh_proposals, gibbs_proposals, sa_proposals,
-                           mh_accepts, gibbs_accepts, sa_accepts, trail_length):
+                           mh_accepts, gibbs_accepts, sa_accepts, trail_length,
+                           x_grid, y_grid, z_values):
     """
     Create animation frames for the MCMC visualization.
     """

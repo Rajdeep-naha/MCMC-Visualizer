@@ -218,7 +218,8 @@ if st.button("Run Simulation"):
     frames = create_animation_frames(fig, mh_samples, gibbs_samples,
                                      sa_samples, mh_proposals, gibbs_proposals,
                                      sa_proposals, mh_accepts, gibbs_accepts,
-                                     sa_accepts, trail_length)
+                                     sa_accepts, trail_length,
+                                     x_grid, y_grid, z_values)
 
     # Determine axis ranges to ensure all points are visible
     # For each method, find the min/max values and add some padding
