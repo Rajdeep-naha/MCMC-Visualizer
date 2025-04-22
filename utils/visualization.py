@@ -50,6 +50,51 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         trail_start = max(0, i - trail_length)
 
         # Add trail data for Metropolis-Hastings (leftmost)
+        frame_data.append(
+            go.Scatter(
+                x=mh_samples[trail_start:i+1, 0],
+                y=mh_samples[trail_start:i+1, 1],
+                mode='markers',
+                marker=dict(
+                    color=['red' if j == i else 'rgb(31, 119, 180)' if j > 0 and mh_accepts[j-1] else 'rgb(244, 67, 54)' for j in range(trail_start, i+1)],
+                    size=[10 if j == i else 8 if j > 0 and mh_accepts[j-1] else 6 for j in range(trail_start, i+1)],
+                    symbol=['circle' if j == i or (j > 0 and mh_accepts[j-1]) else 'cross' for j in range(trail_start, i+1)]
+                ),
+                showlegend=False
+            )
+        )
+
+        # Add trail data for Simulated Annealing (middle)
+        frame_data.append(
+            go.Scatter(
+                x=sa_samples[trail_start:i+1, 0],
+                y=sa_samples[trail_start:i+1, 1],
+                mode='markers',
+                marker=dict(
+                    color=['red' if j == i else 'rgb(44, 160, 44)' if j > 0 and sa_accepts[j-1] else 'rgb(244, 67, 54)' for j in range(trail_start, i+1)],
+                    size=[10 if j == i else 8 if j > 0 and sa_accepts[j-1] else 6 for j in range(trail_start, i+1)],
+                    symbol=['circle' if j == i or (j > 0 and sa_accepts[j-1]) else 'cross' for j in range(trail_start, i+1)]
+                ),
+                showlegend=False
+            )
+        )
+
+        # Add trail data for Gibbs Sampling (rightmost)
+        frame_data.append(
+            go.Scatter(
+                x=gibbs_samples[trail_start:i+1, 0],
+                y=gibbs_samples[trail_start:i+1, 1],
+                mode='markers',
+                marker=dict(
+                    color=['red' if j == i else 'rgb(255, 127, 14)' if j > 0 and gibbs_accepts[j-1] else 'rgb(244, 67, 54)' for j in range(trail_start, i+1)],
+                    size=[10 if j == i else 8 if j > 0 and gibbs_accepts[j-1] else 6 for j in range(trail_start, i+1)],
+                    symbol=['circle' if j == i or (j > 0 and gibbs_accepts[j-1]) else 'cross' for j in range(trail_start, i+1)]
+                ),
+                showlegend=False
+            )
+        )
+
+        # Create frame
         colors = []
         sizes = []
         symbols = []
