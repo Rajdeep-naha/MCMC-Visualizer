@@ -78,40 +78,30 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         symbols = []
         
         # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i):
-            if mh_accepts[j - 1]:
-                # Accepted points
+        for j in range(trail_start, i+1):  # Include current point in trail
+            if j == i:  # Current point
+                colors.append('red')
+                sizes.append(10)
+                symbols.append('circle')
+            elif j > 0 and mh_accepts[j-1]:  # Accepted points
                 colors.append('rgba(31, 119, 180, 0.9)')
                 sizes.append(8)
                 symbols.append('circle')
-            else:
-                # Rejected points
+            elif j > 0:  # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail including current point
         frame_data.append(
             go.Scatter(
-                x=mh_samples[trail_start:i, 0],
-                y=mh_samples[trail_start:i, 1],
+                x=mh_samples[trail_start:i+1, 0],
+                y=mh_samples[trail_start:i+1, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
-        
-        # Add proposed point (will be the current point at this iteration if accepted)
-        if i < n_iterations:  # Make sure we don't go out of bounds
-            frame_data.append(
-                go.Scatter(
-                    x=[mh_proposals[i-1, 0]],
-                    y=[mh_proposals[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='red', size=10),
-                    showlegend=False
-                )
-            )
         else:
             # Last iteration, just show the final point
             frame_data.append(
@@ -130,40 +120,30 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         symbols = []
         
         # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i):
-            if gibbs_accepts[j - 1]:
-                # Accepted points
+        for j in range(trail_start, i+1):  # Include current point in trail
+            if j == i:  # Current point
+                colors.append('red')
+                sizes.append(10)
+                symbols.append('circle')
+            elif j > 0 and gibbs_accepts[j-1]:  # Accepted points
                 colors.append('rgba(255, 127, 14, 0.9)')
                 sizes.append(8)
                 symbols.append('circle')
-            else:
-                # Rejected points
+            elif j > 0:  # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail including current point
         frame_data.append(
             go.Scatter(
-                x=gibbs_samples[trail_start:i, 0],
-                y=gibbs_samples[trail_start:i, 1],
+                x=gibbs_samples[trail_start:i+1, 0],
+                y=gibbs_samples[trail_start:i+1, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
-        
-        # Add proposed point (will be the current point at this iteration if accepted)
-        if i < n_iterations:  # Make sure we don't go out of bounds
-            frame_data.append(
-                go.Scatter(
-                    x=[gibbs_proposals[i-1, 0]],
-                    y=[gibbs_proposals[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='red', size=10),
-                    showlegend=False
-                )
-            )
         else:
             # Last iteration, just show the final point
             frame_data.append(
@@ -182,40 +162,30 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         symbols = []
         
         # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i):
-            if sa_accepts[j - 1]:
-                # Accepted points
+        for j in range(trail_start, i+1):  # Include current point in trail
+            if j == i:  # Current point
+                colors.append('red')
+                sizes.append(10)
+                symbols.append('circle')
+            elif j > 0 and sa_accepts[j-1]:  # Accepted points
                 colors.append('rgba(44, 160, 44, 0.9)')
                 sizes.append(8)
                 symbols.append('circle')
-            else:
-                # Rejected points
+            elif j > 0:  # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail including current point
         frame_data.append(
             go.Scatter(
-                x=sa_samples[trail_start:i, 0],
-                y=sa_samples[trail_start:i, 1],
+                x=sa_samples[trail_start:i+1, 0],
+                y=sa_samples[trail_start:i+1, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
-        
-        # Add proposed point (will be the current point at this iteration if accepted)
-        if i < n_iterations:  # Make sure we don't go out of bounds
-            frame_data.append(
-                go.Scatter(
-                    x=[sa_proposals[i-1, 0]],
-                    y=[sa_proposals[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='red', size=10),
-                    showlegend=False
-                )
-            )
         else:
             # Last iteration, just show the final point
             frame_data.append(
