@@ -23,6 +23,21 @@ st.markdown("""
     the probability space differently.
 """)
 
+# Add color explanation at the beginning
+st.markdown("""
+    ### Understanding the Visualization
+    
+    In the animations below:
+    - **Blue dots** (left panel): Trail of Metropolis-Hastings algorithm samples
+    - **Orange dots** (middle panel): Trail of Gibbs Sampling algorithm samples
+    - **Green dots** (right panel): Trail of Simulated Annealing algorithm samples
+    - **Red dot**: Current position of the sampler at this iteration
+    - **Bright colored dots**: Accepted moves (where the proposal was accepted)
+    - **Faint colored dots**: Rejected moves (where the algorithm stayed at the same position)
+    
+    The background contour shows the target probability distribution being sampled.
+""")
+
 # Sidebar for controls
 st.sidebar.header("Parameters")
 
