@@ -1,6 +1,7 @@
 import numpy as np
 import plotly.graph_objects as go
 
+
 def create_contour_plot(distribution, x_range, y_range, resolution=100):
     """
     Create a contour plot for a 2D distribution.
@@ -32,10 +33,11 @@ def create_contour_plot(distribution, x_range, y_range, resolution=100):
 
     return x_grid, y_grid, z_values
 
+
 def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
-                           mh_proposals, gibbs_proposals, sa_proposals,
-                           mh_accepts, gibbs_accepts, sa_accepts, trail_length,
-                           x_grid, y_grid, z_values):
+                            mh_proposals, gibbs_proposals, sa_proposals,
+                            mh_accepts, gibbs_accepts, sa_accepts,
+                            trail_length, x_grid, y_grid, z_values):
     """
     Create animation frames for the MCMC visualization.
     """
@@ -49,50 +51,20 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Calculate trail start point
         trail_start = max(0, i - trail_length)
 
-        # Add trail data for Metropolis-Hastings (leftmost)
-        colors = []
-        sizes = []
-        symbols = []
-
-        # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i+1):  # Include current point in trail
-            if j == i:  # Current point
-                colors.append('red')
-                sizes.append(10)
-                symbols.append('circle')
-            elif j > 0 and mh_accepts[j-1]:  # Accepted points
-                colors.append('rgb(76, 175, 80)')  # Matte green for MH (leftmost)
-                sizes.append(8)
-                symbols.append('circle')
-            else:  # Rejected points
-                colors.append('rgb(244, 67, 54)')  # Matte red
-                sizes.append(6)
-                symbols.append('cross')
-
-        # Add trail including current point
-        frame_data.append(
-            go.Scatter(
-                x=mh_samples[trail_start:i+1, 0],
-                y=mh_samples[trail_start:i+1, 1],
-                mode='markers',
-                marker=dict(color=colors, size=sizes, symbol=symbols),
-                showlegend=False
-            )
-        )
-
         # Add trail data for Gibbs Sampling (middle)
         colors = []
         sizes = []
         symbols = []
 
         # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i+1):  # Include current point in trail
+        for j in range(trail_start, i + 1):  # Include current point in trail
             if j == i:  # Current point
                 colors.append('red')
                 sizes.append(10)
                 symbols.append('circle')
-            elif j > 0 and gibbs_accepts[j-1]:  # Accepted points
-                colors.append('rgb(255, 152, 0)')  # Matte orange for Gibbs (middle)
+            elif j > 0 and gibbs_accepts[j - 1]:  # Accepted points
+                colors.append(
+                    'rgb(255, 152, 0)')  # Matte orange for Gibbs (middle)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
@@ -102,14 +74,40 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
 
         # Add trail including current point
         frame_data.append(
-            go.Scatter(
-                x=gibbs_samples[trail_start:i+1, 0],
-                y=gibbs_samples[trail_start:i+1, 1],
-                mode='markers',
-                marker=dict(color=colors, size=sizes, symbol=symbols),
-                showlegend=False
-            )
-        )
+            go.Scatter(x=gibbs_samples[trail_start:i + 1, 0],
+                       y=gibbs_samples[trail_start:i + 1, 1],
+                       mode='markers',
+                       marker=dict(color=colors, size=sizes, symbol=symbols),
+                       showlegend=False))
+
+        # Add trail data for Metropolis-Hastings (leftmost)
+        colors = []
+        sizes = []
+        symbols = []
+
+        # Set different styles for accepted vs rejected points
+        for j in range(trail_start, i + 1):  # Include current point in trail
+            if j == i:  # Current point
+                colors.append('red')
+                sizes.append(10)
+                symbols.append('circle')
+            elif j > 0 and mh_accepts[j - 1]:  # Accepted points
+                colors.append(
+                    'rgb(76, 175, 80)')  # Matte green for MH (leftmost)
+                sizes.append(8)
+                symbols.append('circle')
+            else:  # Rejected points
+                colors.append('rgb(244, 67, 54)')  # Matte red
+                sizes.append(6)
+                symbols.append('cross')
+
+        # Add trail including current point
+        frame_data.append(
+            go.Scatter(x=mh_samples[trail_start:i + 1, 0],
+                       y=mh_samples[trail_start:i + 1, 1],
+                       mode='markers',
+                       marker=dict(color=colors, size=sizes, symbol=symbols),
+                       showlegend=False))
 
         # Add trail data for Simulated Annealing (rightmost)
         colors = []
@@ -117,13 +115,14 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         symbols = []
 
         # Set different styles for accepted vs rejected points
-        for j in range(trail_start, i+1):  # Include current point in trail
+        for j in range(trail_start, i + 1):  # Include current point in trail
             if j == i:  # Current point
                 colors.append('red')
                 sizes.append(10)
                 symbols.append('circle')
-            elif j > 0 and sa_accepts[j-1]:  # Accepted points
-                colors.append('rgb(33, 150, 243)')  # Matte blue for SA (rightmost)
+            elif j > 0 and sa_accepts[j - 1]:  # Accepted points
+                colors.append(
+                    'rgb(33, 150, 243)')  # Matte blue for SA (rightmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
@@ -133,63 +132,56 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
 
         # Add trail including current point
         frame_data.append(
-            go.Scatter(
-                x=sa_samples[trail_start:i+1, 0],
-                y=sa_samples[trail_start:i+1, 1],
-                mode='markers',
-                marker=dict(color=colors, size=sizes, symbol=symbols),
-                showlegend=False
-            )
-        )
+            go.Scatter(x=sa_samples[trail_start:i + 1, 0],
+                       y=sa_samples[trail_start:i + 1, 1],
+                       mode='markers',
+                       marker=dict(color=colors, size=sizes, symbol=symbols),
+                       showlegend=False))
 
         # Create frame
         frames.append(
-            go.Frame(
-                data=frame_data,
-                name=str(i - 1),
-                traces=[1, 2, 3, 4, 5, 6]
-            )
-        )
+            go.Frame(data=frame_data,
+                     name=str(i - 1),
+                     traces=[1, 2, 3, 4, 5, 6]))
 
     # Add contours to all subplots
     for col in range(1, 4):
-        fig.add_trace(
-            go.Contour(
-                z=z_values,
-                x=x_grid[0, :],
-                y=y_grid[:, 0],
-                colorscale='Viridis',
-                opacity=0.4,
-                showscale=False,
-                contours=dict(
-                    showlabels=False,
-                    coloring='fill',
-                )
-            ),
-            row=1,
-            col=col
-        )
+        fig.add_trace(go.Contour(z=z_values,
+                                 x=x_grid[0, :],
+                                 y=y_grid[:, 0],
+                                 colorscale='Viridis',
+                                 opacity=0.2,
+                                 showscale=False,
+                                 contours=dict(
+                                     showlabels=False,
+                                     coloring='fill',
+                                 )),
+                      row=1,
+                      col=col)
 
     # Add initial points to the figure
-    for col, (samples, color_name) in enumerate(zip(
-        [gibbs_samples, sa_samples, mh_samples],  # Orange(Gibbs), Green(SA), Blue(MH)
-        ['rgba(255, 127, 14, 0.8)', 'rgba(44, 160, 44, 0.8)', 'rgba(31, 119, 180, 0.8)']
-    ), 1):
-        fig.add_trace(
-            go.Scatter(
-                x=[samples[0, 0]],
-                y=[samples[0, 1]],
-                mode='markers',
-                marker=dict(color='red', size=10),
-                showlegend=False
-            ),
-            row=1, col=col
-        )
+    for col, (samples, color_name) in enumerate(
+            zip(
+                [gibbs_samples, sa_samples, mh_samples
+                 ],  # Orange(Gibbs), Green(SA), Blue(MH)
+                [
+                    'rgba(255, 127, 14, 1)', 'rgba(44, 160, 44, 1)',
+                    'rgba(31, 119, 180, 1)'
+                ]),
+            1):
+        fig.add_trace(go.Scatter(x=[samples[0, 0]],
+                                 y=[samples[0, 1]],
+                                 mode='markers',
+                                 marker=dict(color='red', size=10),
+                                 showlegend=False),
+                      row=1,
+                      col=col)
 
     # Add frames to figure
     fig.frames = frames
 
     return frames
+
 
 def add_annotations(fig):
     """
@@ -198,49 +190,43 @@ def add_annotations(fig):
     # Add annotations for each method
     annotations = [
         # Metropolis-Hastings
-        dict(
-            x=0.17,
-            y=0.95,
-            xref='paper',
-            yref='paper',
-            text='Random walk proposals<br>Isotropic jumps',
-            showarrow=False,
-            font=dict(size=10),
-            bgcolor='rgba(255, 255, 255, 0.7)',
-            bordercolor='rgba(0, 0, 0, 0.5)',
-            borderwidth=1,
-            borderpad=4
-        ),
+        dict(x=0.17,
+             y=0.95,
+             xref='paper',
+             yref='paper',
+             text='Random walk proposals<br>Isotropic jumps',
+             showarrow=False,
+             font=dict(size=10),
+             bgcolor='rgba(255, 255, 255, 0.7)',
+             bordercolor='rgba(0, 0, 0, 0.5)',
+             borderwidth=1,
+             borderpad=4),
 
         # Gibbs Sampling
-        dict(
-            x=0.5,
-            y=0.95,
-            xref='paper',
-            yref='paper',
-            text='Samples one dimension at a time<br>Always accepts moves',
-            showarrow=False,
-            font=dict(size=10),
-            bgcolor='rgba(255, 255, 255, 0.7)',
-            bordercolor='rgba(0, 0, 0, 0.5)',
-            borderwidth=1,
-            borderpad=4
-        ),
+        dict(x=0.5,
+             y=0.95,
+             xref='paper',
+             yref='paper',
+             text='Samples one dimension at a time<br>Always accepts moves',
+             showarrow=False,
+             font=dict(size=10),
+             bgcolor='rgba(255, 255, 255, 0.7)',
+             bordercolor='rgba(0, 0, 0, 0.5)',
+             borderwidth=1,
+             borderpad=4),
 
         # Simulated Annealing
-        dict(
-            x=0.83,
-            y=0.95,
-            xref='paper',
-            yref='paper',
-            text='Decreasing temperature<br>More exploration initially',
-            showarrow=False,
-            font=dict(size=10),
-            bgcolor='rgba(255, 255, 255, 0.7)',
-            bordercolor='rgba(0, 0, 0, 0.5)',
-            borderwidth=1,
-            borderpad=4
-        )
+        dict(x=0.83,
+             y=0.95,
+             xref='paper',
+             yref='paper',
+             text='Decreasing temperature<br>More exploration initially',
+             showarrow=False,
+             font=dict(size=10),
+             bgcolor='rgba(255, 255, 255, 0.7)',
+             bordercolor='rgba(0, 0, 0, 0.5)',
+             borderwidth=1,
+             borderpad=4)
     ]
 
     fig.update_layout(annotations=annotations)

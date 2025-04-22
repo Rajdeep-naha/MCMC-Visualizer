@@ -67,7 +67,7 @@ else:  # Bivariate Gaussian
 
 # MCMC parameters
 st.sidebar.header("MCMC Settings")
-n_iterations = st.sidebar.slider("Number of Iterations", 100, 2000, 500)
+n_iterations = st.sidebar.slider("Number of Iterations", 100, 2000, 100)
 step_size = st.sidebar.slider("Step Size", 0.01, 2.0, 0.3)
 
 # Specific parameters for Simulated Annealing
@@ -205,7 +205,7 @@ if st.button("Run Simulation"):
                                  x=x_grid[0, :],
                                  y=y_grid[:, 0],
                                  colorscale='Viridis',
-                                 opacity=0.6,
+                                 opacity=0.4,
                                  showscale=False,
                                  contours=dict(
                                      showlabels=False,
@@ -218,8 +218,8 @@ if st.button("Run Simulation"):
     frames = create_animation_frames(fig, mh_samples, gibbs_samples,
                                      sa_samples, mh_proposals, gibbs_proposals,
                                      sa_proposals, mh_accepts, gibbs_accepts,
-                                     sa_accepts, trail_length,
-                                     x_grid, y_grid, z_values)
+                                     sa_accepts, trail_length, x_grid, y_grid,
+                                     z_values)
 
     # Determine axis ranges to ensure all points are visible
     # For each method, find the min/max values and add some padding
