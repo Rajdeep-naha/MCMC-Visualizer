@@ -61,11 +61,11 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and mh_accepts[j-1]:  # Accepted points
-                colors.append('rgba(44, 160, 44, 1.0)')  # Green for MH (leftmost)
+                colors.append('rgb(76, 175, 80)')  # Matte green for MH (leftmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgba(255, 0, 0, 0.9)')
+                colors.append('rgb(244, 67, 54)')  # Matte red
                 sizes.append(6)
                 symbols.append('cross')
 
@@ -92,11 +92,11 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and gibbs_accepts[j-1]:  # Accepted points
-                colors.append('rgba(255, 127, 14, 1.0)')  # Orange for Gibbs (middle)
+                colors.append('rgb(255, 152, 0)')  # Matte orange for Gibbs (middle)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgba(255, 0, 0, 0.9)')
+                colors.append('rgb(244, 67, 54)')  # Matte red
                 sizes.append(6)
                 symbols.append('cross')
 
@@ -123,11 +123,11 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and sa_accepts[j-1]:  # Accepted points
-                colors.append('rgba(31, 119, 180, 1.0)')  # Blue for SA (rightmost)
+                colors.append('rgb(33, 150, 243)')  # Matte blue for SA (rightmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgba(255, 0, 0, 0.9)')
+                colors.append('rgb(244, 67, 54)')  # Matte red
                 sizes.append(6)
                 symbols.append('cross')
 
