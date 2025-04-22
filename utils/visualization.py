@@ -73,6 +73,11 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Calculate trail start point
         trail_start = max(0, i - trail_length)
         
+        # Make copies of the samples to avoid references
+        mh_frame_samples = mh_samples.copy()
+        gibbs_frame_samples = gibbs_samples.copy()
+        sa_frame_samples = sa_samples.copy()
+        
         # Add trail data for Metropolis-Hastings
         colors = []
         sizes = []
@@ -91,22 +96,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail - using mh_frame_samples to avoid reference issues
         frame_data.append(
             go.Scatter(
-                x=mh_samples[trail_start:i, 0],
-                y=mh_samples[trail_start:i, 1],
+                x=mh_frame_samples[trail_start:i, 0],
+                y=mh_frame_samples[trail_start:i, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # Add current point (red dot at current position)
+        # Add current point (red dot at current position) - using mh_frame_samples to avoid reference issues
         frame_data.append(
             go.Scatter(
-                x=[mh_samples[i, 0]],
-                y=[mh_samples[i, 1]],
+                x=[mh_frame_samples[i, 0]],
+                y=[mh_frame_samples[i, 1]],
                 mode='markers',
                 marker=dict(color='red', size=10),
                 showlegend=False
@@ -143,22 +148,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail (using gibbs_frame_samples to avoid reference issues)
         frame_data.append(
             go.Scatter(
-                x=gibbs_samples[trail_start:i, 0],
-                y=gibbs_samples[trail_start:i, 1],
+                x=gibbs_frame_samples[trail_start:i, 0],
+                y=gibbs_frame_samples[trail_start:i, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # Add current point (red dot at current position)
+        # Add current point (red dot at current position) - using gibbs_frame_samples to avoid reference issues
         frame_data.append(
             go.Scatter(
-                x=[gibbs_samples[i, 0]],
-                y=[gibbs_samples[i, 1]],
+                x=[gibbs_frame_samples[i, 0]],
+                y=[gibbs_frame_samples[i, 1]],
                 mode='markers',
                 marker=dict(color='red', size=10),
                 showlegend=False
@@ -195,22 +200,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 sizes.append(6)
                 symbols.append('cross')
         
-        # Add trail
+        # Add trail (using sa_frame_samples to avoid reference issues)
         frame_data.append(
             go.Scatter(
-                x=sa_samples[trail_start:i, 0],
-                y=sa_samples[trail_start:i, 1],
+                x=sa_frame_samples[trail_start:i, 0],
+                y=sa_frame_samples[trail_start:i, 1],
                 mode='markers',
                 marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # Add current point (red dot at current position)
+        # Add current point (red dot at current position) - using sa_frame_samples to avoid reference issues
         frame_data.append(
             go.Scatter(
-                x=[sa_samples[i, 0]],
-                y=[sa_samples[i, 1]],
+                x=[sa_frame_samples[i, 0]],
+                y=[sa_frame_samples[i, 1]],
                 mode='markers',
                 marker=dict(color='red', size=10),
                 showlegend=False
