@@ -33,7 +33,7 @@ st.markdown("""
     - **Green dots** (right panel): Trail of Simulated Annealing algorithm samples
     - **Red dot**: Current position of the sampler at this iteration
     - **Circle markers**: Accepted moves (where the proposal was accepted)
-    - **X markers (red)**: Rejected moves (where the algorithm stayed at the same position)
+    - **Cross markers (red)**: Rejected moves (where the algorithm stayed at the same position)
     
     The background contour shows the target probability distribution being sampled.
 """)

@@ -87,7 +87,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
-                symbols.append('x')
+                symbols.append('cross')
         
         # Add trail
         frame_data.append(
@@ -127,7 +127,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
-                symbols.append('x')
+                symbols.append('cross')
         
         # Add trail
         frame_data.append(
@@ -167,7 +167,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 # Rejected points
                 colors.append('rgba(255, 0, 0, 0.7)')
                 sizes.append(6)
-                symbols.append('x')
+                symbols.append('cross')
         
         # Add trail
         frame_data.append(
