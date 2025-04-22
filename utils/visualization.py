@@ -48,7 +48,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Calculate trail start point
         trail_start = max(0, i - trail_length)
 
-        # Add trail data for Metropolis-Hastings
+        # Add trail data for Metropolis-Hastings (leftmost)
         colors = []
         sizes = []
         symbols = []
@@ -79,7 +79,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
 
-        # Add trail data for Gibbs Sampling
+        # Add trail data for Gibbs Sampling (middle)
         colors = []
         sizes = []
         symbols = []
@@ -110,7 +110,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
 
-        # Add trail data for Simulated Annealing
+        # Add trail data for Simulated Annealing (rightmost)
         colors = []
         sizes = []
         symbols = []
