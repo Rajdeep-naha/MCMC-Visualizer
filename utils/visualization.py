@@ -141,21 +141,6 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                      name=str(i - 1),
                      traces=[1, 2, 3, 4, 5, 6]))
 
-    # Add contours to all subplots
-    for col in range(1, 4):
-        fig.add_trace(go.Contour(z=z_values,
-                                 x=x_grid[0, :],
-                                 y=y_grid[:, 0],
-                                 colorscale='Viridis',
-                                 opacity=0.2,
-                                 showscale=False,
-                                 contours=dict(
-                                     showlabels=False,
-                                     coloring='fill',
-                                 )),
-                      row=1,
-                      col=col)
-
     # Add initial points to the figure
     for col, (samples, color_name) in enumerate(
             zip(
