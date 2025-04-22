@@ -151,7 +151,21 @@ if st.button("Run Simulation"):
         trail_length
     )
     
-    # Update layout for animation
+    # Determine axis ranges to ensure all points are visible
+    # For each method, find the min/max values and add some padding
+    all_samples = np.vstack([mh_samples, gibbs_samples, sa_samples])
+    min_x = np.min(all_samples[:, 0]) - 1
+    max_x = np.max(all_samples[:, 0]) + 1
+    min_y = np.min(all_samples[:, 1]) - 1
+    max_y = np.max(all_samples[:, 1]) + 1
+    
+    # Make sure we're not zooming in too much on the distribution
+    min_x = min(min_x, x_range[0])
+    max_x = max(max_x, x_range[1])
+    min_y = min(min_y, y_range[0])
+    max_y = max(max_y, y_range[1])
+    
+    # Update layout for animation with adjusted axis ranges
     fig.update_layout(
         title="MCMC Methods Comparison",
         xaxis_title="X",
@@ -215,6 +229,14 @@ if st.button("Run Simulation"):
             ]
         }]
     )
+    
+    # Update axis ranges for all subplots to ensure all points are visible
+    fig.update_xaxes(range=[min_x, max_x], row=1, col=1)
+    fig.update_yaxes(range=[min_y, max_y], row=1, col=1)
+    fig.update_xaxes(range=[min_x, max_x], row=1, col=2)
+    fig.update_yaxes(range=[min_y, max_y], row=1, col=2)
+    fig.update_xaxes(range=[min_x, max_x], row=1, col=3)
+    fig.update_yaxes(range=[min_y, max_y], row=1, col=3)
     
     # Add annotations
     fig = add_annotations(fig)
