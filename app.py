@@ -89,22 +89,84 @@ sa = SimulatedAnnealing(distribution, step_size, initial_temp, cooling_rate)
 
 # Run button to start the simulation
 if st.button("Run Simulation"):
-    # Create progress bar
-    progress_bar = st.progress(0)
-    status_text = st.empty()
+    # Set up layout for progress indicators
+    progress_container = st.container()
+    with progress_container:
+        st.markdown("### Simulation Progress")
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.markdown("**Metropolis-Hastings**")
+            mh_progress = st.progress(0)
+            mh_status = st.empty()
+        
+        with col2:
+            st.markdown("**Gibbs Sampling**")
+            gibbs_progress = st.progress(0)
+            gibbs_status = st.empty()
+            
+        with col3:
+            st.markdown("**Simulated Annealing**")
+            sa_progress = st.progress(0)
+            sa_status = st.empty()
     
-    # Run the algorithms
-    status_text.text("Running Metropolis-Hastings algorithm...")
-    mh_samples, mh_accepts = mh.run(initial_state, n_iterations)
+    visualization_status = st.empty()
     
-    status_text.text("Running Gibbs Sampling algorithm...")
-    gibbs_samples, gibbs_accepts = gibbs.run(initial_state, n_iterations)
+    # Define modified run function with progress updates
+    def run_with_progress(sampler, initial_state, n_iterations, progress_bar, status):
+        samples = np.zeros((n_iterations + 1, len(initial_state)))
+        accepts = np.zeros(n_iterations, dtype=bool)
+        temperatures = np.zeros(n_iterations + 1) if hasattr(sampler, 'current_temp') else None
+        
+        samples[0] = initial_state
+        if hasattr(sampler, 'current_temp'):
+            temperatures[0] = sampler.initial_temp
+            sampler.current_temp = sampler.initial_temp
+        
+        # Update progress every 5% of iterations
+        update_freq = max(1, n_iterations // 20)
+        
+        for i in range(n_iterations):
+            proposed_state = sampler.propose(samples[i])
+            accepts[i] = sampler.accept(samples[i], proposed_state)
+            
+            if accepts[i]:
+                samples[i + 1] = proposed_state
+            else:
+                samples[i + 1] = samples[i]
+            
+            if hasattr(sampler, 'current_temp'):
+                sampler.current_temp *= sampler.cooling_rate
+                temperatures[i + 1] = sampler.current_temp
+            
+            # Update progress bar
+            if i % update_freq == 0 or i == n_iterations - 1:
+                progress = int(100 * (i + 1) / n_iterations)
+                progress_bar.progress(progress)
+                status.text(f"Step {i+1}/{n_iterations} ({progress}%)")
+        
+        progress_bar.progress(100)
+        status.text("Completed")
+        
+        if temperatures is not None:
+            return samples, accepts, temperatures
+        else:
+            return samples, accepts
     
-    status_text.text("Running Simulated Annealing algorithm...")
-    sa_samples, sa_accepts, sa_temps = sa.run(initial_state, n_iterations)
+    # Run the algorithms with progress updates
+    mh_status.text("Starting...")
+    mh_result = run_with_progress(mh, initial_state, n_iterations, mh_progress, mh_status)
+    mh_samples, mh_accepts = mh_result
     
-    progress_bar.progress(100)
-    status_text.text("Generating visualizations...")
+    gibbs_status.text("Starting...")
+    gibbs_result = run_with_progress(gibbs, initial_state, n_iterations, gibbs_progress, gibbs_status)
+    gibbs_samples, gibbs_accepts = gibbs_result
+    
+    sa_status.text("Starting...")
+    sa_result = run_with_progress(sa, initial_state, n_iterations, sa_progress, sa_status)
+    sa_samples, sa_accepts, sa_temps = sa_result
+    
+    visualization_status.info("Generating visualizations...")
     
     # Calculate acceptance rates
     mh_acceptance_rate = np.mean(mh_accepts) * 100
@@ -307,6 +369,6 @@ if st.button("Run Simulation"):
     - **Optimization**: Finding global optima in complex functions
     """)
     
-    status_text.empty()
+    visualization_status.empty()
 else:
     st.info("Set your desired parameters and click 'Run Simulation' to start.")
