@@ -197,7 +197,7 @@ if st.button("Run Simulation"):
                 x=x_grid[0, :],
                 y=y_grid[:, 0],
                 colorscale='Viridis',
-                opacity=0.7,
+                opacity=0.6,
                 showscale=False,
                 contours=dict(
                     showlabels=False,
