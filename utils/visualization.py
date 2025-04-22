@@ -59,16 +59,15 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Set different styles for accepted vs rejected points
         for j in range(trail_start, i + 1):  # Include current point in trail
             if j == i:  # Current point
-                colors.append('red')
+                colors.append('#FF0000')  # Bright red
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and gibbs_accepts[j - 1]:  # Accepted points
-                colors.append(
-                    'rgb(255, 152, 0)')  # Matte orange for Gibbs (middle)
+                colors.append('#FF9100')  # Bright orange for Gibbs (middle)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgb(244, 67, 54)')  # Matte red
+                colors.append('#FF1744')  # Bright red for rejected
                 sizes.append(6)
                 symbols.append('cross')
 
@@ -88,16 +87,15 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Set different styles for accepted vs rejected points
         for j in range(trail_start, i + 1):  # Include current point in trail
             if j == i:  # Current point
-                colors.append('red')
+                colors.append('#FF0000')  # Bright red
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and mh_accepts[j - 1]:  # Accepted points
-                colors.append(
-                    'rgb(76, 175, 80)')  # Matte green for MH (leftmost)
+                colors.append('#00E676')  # Bright green for MH (leftmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgb(244, 67, 54)')  # Matte red
+                colors.append('#FF1744')  # Bright red for rejected
                 sizes.append(6)
                 symbols.append('cross')
 
@@ -117,16 +115,15 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Set different styles for accepted vs rejected points
         for j in range(trail_start, i + 1):  # Include current point in trail
             if j == i:  # Current point
-                colors.append('red')
+                colors.append('#FF0000')  # Bright red
                 sizes.append(10)
                 symbols.append('circle')
             elif j > 0 and sa_accepts[j - 1]:  # Accepted points
-                colors.append(
-                    'rgb(33, 150, 243)')  # Matte blue for SA (rightmost)
+                colors.append('#2979FF')  # Bright blue for SA (rightmost)
                 sizes.append(8)
                 symbols.append('circle')
             else:  # Rejected points
-                colors.append('rgb(244, 67, 54)')  # Matte red
+                colors.append('#FF1744')  # Bright red for rejected
                 sizes.append(6)
                 symbols.append('cross')
 
