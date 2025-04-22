@@ -152,8 +152,8 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
 
     # Add initial points to the figure
     for col, (samples, color_name) in enumerate(zip(
-        [mh_samples, gibbs_samples, sa_samples],  # Blue(MH), Orange(Gibbs), Green(SA)
-        ['rgba(31, 119, 180, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(44, 160, 44, 0.8)']
+        [sa_samples, gibbs_samples, mh_samples],  # Green(SA), Orange(Gibbs), Blue(MH)
+        ['rgba(44, 160, 44, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(31, 119, 180, 0.8)']
     ), 1):
         fig.add_trace(
             go.Scatter(
