@@ -189,8 +189,8 @@ if st.button("Run Simulation"):
         cols=3,
         subplot_titles=(
             f"Metropolis-Hastings (Accept: {mh_acceptance_rate:.1f}%)",
-            f"Gibbs Sampling (Accept: {gibbs_acceptance_rate:.1f}%)",
-            f"Simulated Annealing (Accept: {sa_acceptance_rate:.1f}%)"),
+            f"Simulated Annealing (Accept: {sa_acceptance_rate:.1f}%)",
+            f"Gibbs Sampling (Accept: {gibbs_acceptance_rate:.1f}%)"),
         specs=[[{
             'type': 'scatter'
         }, {
