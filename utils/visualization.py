@@ -33,7 +33,9 @@ def create_contour_plot(distribution, x_range, y_range, resolution=100):
     return x_grid, y_grid, z_values
 
 def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples, 
-                           mh_accepts, gibbs_accepts, sa_accepts, trail_length):
+                           mh_accepts, gibbs_accepts, sa_accepts, 
+                           mh_proposed, gibbs_proposed, sa_proposed,
+                           trail_length):
     """
     Create animation frames for the MCMC visualization.
     
@@ -100,7 +102,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
+        # Add current point (red dot at current position)
         frame_data.append(
             go.Scatter(
                 x=[mh_samples[i, 0]],
@@ -110,6 +112,18 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 showlegend=False
             )
         )
+        
+        # Add proposed point if it was rejected (showing where it tried to go)
+        if i > 0 and not mh_accepts[i-1]:
+            frame_data.append(
+                go.Scatter(
+                    x=[mh_proposed[i-1, 0]],
+                    y=[mh_proposed[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
+                    showlegend=False
+                )
+            )
         
         # Add trail data for Gibbs Sampling
         colors = []
@@ -140,7 +154,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
+        # Add current point (red dot at current position)
         frame_data.append(
             go.Scatter(
                 x=[gibbs_samples[i, 0]],
@@ -150,6 +164,18 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 showlegend=False
             )
         )
+        
+        # Add proposed point if it was rejected (showing where it tried to go)
+        if i > 0 and not gibbs_accepts[i-1]:
+            frame_data.append(
+                go.Scatter(
+                    x=[gibbs_proposed[i-1, 0]],
+                    y=[gibbs_proposed[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
+                    showlegend=False
+                )
+            )
         
         # Add trail data for Simulated Annealing
         colors = []
@@ -180,7 +206,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Add current point
+        # Add current point (red dot at current position)
         frame_data.append(
             go.Scatter(
                 x=[sa_samples[i, 0]],
@@ -191,12 +217,26 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Create frame
+        # Add proposed point if it was rejected (showing where it tried to go)
+        if i > 0 and not sa_accepts[i-1]:
+            frame_data.append(
+                go.Scatter(
+                    x=[sa_proposed[i-1, 0]],
+                    y=[sa_proposed[i-1, 1]],
+                    mode='markers',
+                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
+                    showlegend=False
+                )
+            )
+        
+        # Create frame - traces need to match the number of elements in frame_data
+        # Since we've added additional traces for rejected proposals, need to update the traces indices
+        trace_indices = list(range(len(frame_data)))
         frames.append(
             go.Frame(
                 data=frame_data,
                 name=str(i - 1),
-                traces=[1, 2, 3, 4, 5, 6]
+                traces=trace_indices
             )
         )
     
