@@ -72,14 +72,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         trail_start = max(0, i - trail_length)
         
         # Add trail data for Metropolis-Hastings
-        colors = ['rgba(31, 119, 180, 0.2)'] * (i - trail_start)
-        sizes = [6] * (i - trail_start)
+        colors = []
+        sizes = []
+        symbols = []
         
-        # Highlight accepted points
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if mh_accepts[j - 1]:
-                colors[j - trail_start] = 'rgba(31, 119, 180, 0.8)'
-                sizes[j - trail_start] = 8
+                # Accepted points
+                colors.append('rgba(31, 119, 180, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
+            else:
+                # Rejected points
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('x')
         
         # Add trail
         frame_data.append(
@@ -87,7 +95,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 x=mh_samples[trail_start:i, 0],
                 y=mh_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=colors, size=sizes),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
@@ -104,14 +112,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         )
         
         # Add trail data for Gibbs Sampling
-        colors = ['rgba(255, 127, 14, 0.2)'] * (i - trail_start)
-        sizes = [6] * (i - trail_start)
+        colors = []
+        sizes = []
+        symbols = []
         
-        # Highlight accepted points
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if gibbs_accepts[j - 1]:
-                colors[j - trail_start] = 'rgba(255, 127, 14, 0.8)'
-                sizes[j - trail_start] = 8
+                # Accepted points
+                colors.append('rgba(255, 127, 14, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
+            else:
+                # Rejected points
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('x')
         
         # Add trail
         frame_data.append(
@@ -119,7 +135,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 x=gibbs_samples[trail_start:i, 0],
                 y=gibbs_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=colors, size=sizes),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
@@ -136,14 +152,22 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         )
         
         # Add trail data for Simulated Annealing
-        colors = ['rgba(44, 160, 44, 0.2)'] * (i - trail_start)
-        sizes = [6] * (i - trail_start)
+        colors = []
+        sizes = []
+        symbols = []
         
-        # Highlight accepted points
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if sa_accepts[j - 1]:
-                colors[j - trail_start] = 'rgba(44, 160, 44, 0.8)'
-                sizes[j - trail_start] = 8
+                # Accepted points
+                colors.append('rgba(44, 160, 44, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
+            else:
+                # Rejected points
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('x')
         
         # Add trail
         frame_data.append(
@@ -151,7 +175,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                 x=sa_samples[trail_start:i, 0],
                 y=sa_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=colors, size=sizes),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )

@@ -32,8 +32,8 @@ st.markdown("""
     - **Orange dots** (middle panel): Trail of Gibbs Sampling algorithm samples
     - **Green dots** (right panel): Trail of Simulated Annealing algorithm samples
     - **Red dot**: Current position of the sampler at this iteration
-    - **Bright colored dots**: Accepted moves (where the proposal was accepted)
-    - **Faint colored dots**: Rejected moves (where the algorithm stayed at the same position)
+    - **Circle markers**: Accepted moves (where the proposal was accepted)
+    - **X markers (red)**: Rejected moves (where the algorithm stayed at the same position)
     
     The background contour shows the target probability distribution being sampled.
 """)
