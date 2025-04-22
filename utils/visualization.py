@@ -33,9 +33,7 @@ def create_contour_plot(distribution, x_range, y_range, resolution=100):
     return x_grid, y_grid, z_values
 
 def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples, 
-                           mh_accepts, gibbs_accepts, sa_accepts, 
-                           mh_proposed, gibbs_proposed, sa_proposed,
-                           trail_length):
+                           mh_accepts, gibbs_accepts, sa_accepts, trail_length):
     """
     Create animation frames for the MCMC visualization.
     
@@ -66,52 +64,6 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
     frames = []
     n_iterations = len(mh_accepts)
     
-    # Set up initial traces - one for each algorithm
-    # Add initial points to the figure
-    for col, (samples, color_name, algo_name) in enumerate(zip(
-        [mh_samples, gibbs_samples, sa_samples],
-        ['rgba(31, 119, 180, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(44, 160, 44, 0.8)'],
-        ['Metropolis-Hastings', 'Gibbs Sampling', 'Simulated Annealing']
-    ), 1):
-        # Trail trace
-        fig.add_trace(
-            go.Scatter(
-                x=[samples[0, 0]],
-                y=[samples[0, 1]],
-                mode='markers',
-                marker=dict(color=color_name, size=8),
-                name=f"{algo_name} Trail",
-                showlegend=False
-            ),
-            row=1, col=col
-        )
-        
-        # Current point trace
-        fig.add_trace(
-            go.Scatter(
-                x=[samples[0, 0]],
-                y=[samples[0, 1]],
-                mode='markers',
-                marker=dict(color='red', size=10),
-                name=f"{algo_name} Current",
-                showlegend=False
-            ),
-            row=1, col=col
-        )
-        
-        # Rejected proposal trace (empty initially)
-        fig.add_trace(
-            go.Scatter(
-                x=[],
-                y=[],
-                mode='markers',
-                marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                name=f"{algo_name} Rejected",
-                showlegend=False
-            ),
-            row=1, col=col
-        )
-    
     # Create frames for animation
     for i in range(1, n_iterations + 1):
         frame_data = []
@@ -119,35 +71,36 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
         # Calculate trail start point
         trail_start = max(0, i - trail_length)
         
-        # First subplot - Metropolis-Hastings
-        # MH Trail
-        mh_colors = []
-        mh_sizes = []
-        mh_symbols = []
+        # Add trail data for Metropolis-Hastings
+        colors = []
+        sizes = []
+        symbols = []
         
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if mh_accepts[j - 1]:
                 # Accepted points
-                mh_colors.append('rgba(31, 119, 180, 0.9)')
-                mh_sizes.append(8)
-                mh_symbols.append('circle')
+                colors.append('rgba(31, 119, 180, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
             else:
                 # Rejected points
-                mh_colors.append('rgba(255, 0, 0, 0.7)')
-                mh_sizes.append(6)
-                mh_symbols.append('cross')
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('cross')
         
+        # Add trail
         frame_data.append(
             go.Scatter(
                 x=mh_samples[trail_start:i, 0],
                 y=mh_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=mh_colors, size=mh_sizes, symbol=mh_symbols),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # MH Current point
+        # Add current point
         frame_data.append(
             go.Scatter(
                 x=[mh_samples[i, 0]],
@@ -158,58 +111,36 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # MH Rejected proposal
-        if i > 0 and not mh_accepts[i-1]:
-            frame_data.append(
-                go.Scatter(
-                    x=[mh_proposed[i-1, 0]],
-                    y=[mh_proposed[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
-        else:
-            # Empty trace to maintain consistency
-            frame_data.append(
-                go.Scatter(
-                    x=[],
-                    y=[],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
+        # Add trail data for Gibbs Sampling
+        colors = []
+        sizes = []
+        symbols = []
         
-        # Second subplot - Gibbs Sampling
-        # Gibbs Trail
-        gibbs_colors = []
-        gibbs_sizes = []
-        gibbs_symbols = []
-        
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if gibbs_accepts[j - 1]:
                 # Accepted points
-                gibbs_colors.append('rgba(255, 127, 14, 0.9)')
-                gibbs_sizes.append(8)
-                gibbs_symbols.append('circle')
+                colors.append('rgba(255, 127, 14, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
             else:
                 # Rejected points
-                gibbs_colors.append('rgba(255, 0, 0, 0.7)')
-                gibbs_sizes.append(6)
-                gibbs_symbols.append('cross')
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('cross')
         
+        # Add trail
         frame_data.append(
             go.Scatter(
                 x=gibbs_samples[trail_start:i, 0],
                 y=gibbs_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=gibbs_colors, size=gibbs_sizes, symbol=gibbs_symbols),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # Gibbs Current point
+        # Add current point
         frame_data.append(
             go.Scatter(
                 x=[gibbs_samples[i, 0]],
@@ -220,58 +151,36 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # Gibbs Rejected proposal
-        if i > 0 and not gibbs_accepts[i-1]:
-            frame_data.append(
-                go.Scatter(
-                    x=[gibbs_proposed[i-1, 0]],
-                    y=[gibbs_proposed[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
-        else:
-            # Empty trace to maintain consistency
-            frame_data.append(
-                go.Scatter(
-                    x=[],
-                    y=[],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
+        # Add trail data for Simulated Annealing
+        colors = []
+        sizes = []
+        symbols = []
         
-        # Third subplot - Simulated Annealing
-        # SA Trail
-        sa_colors = []
-        sa_sizes = []
-        sa_symbols = []
-        
+        # Set different styles for accepted vs rejected points
         for j in range(trail_start, i):
             if sa_accepts[j - 1]:
                 # Accepted points
-                sa_colors.append('rgba(44, 160, 44, 0.9)')
-                sa_sizes.append(8)
-                sa_symbols.append('circle')
+                colors.append('rgba(44, 160, 44, 0.9)')
+                sizes.append(8)
+                symbols.append('circle')
             else:
                 # Rejected points
-                sa_colors.append('rgba(255, 0, 0, 0.7)')
-                sa_sizes.append(6)
-                sa_symbols.append('cross')
+                colors.append('rgba(255, 0, 0, 0.7)')
+                sizes.append(6)
+                symbols.append('cross')
         
+        # Add trail
         frame_data.append(
             go.Scatter(
                 x=sa_samples[trail_start:i, 0],
                 y=sa_samples[trail_start:i, 1],
                 mode='markers',
-                marker=dict(color=sa_colors, size=sa_sizes, symbol=sa_symbols),
+                marker=dict(color=colors, size=sizes, symbol=symbols),
                 showlegend=False
             )
         )
         
-        # SA Current point
+        # Add current point
         frame_data.append(
             go.Scatter(
                 x=[sa_samples[i, 0]],
@@ -282,36 +191,29 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
             )
         )
         
-        # SA Rejected proposal
-        if i > 0 and not sa_accepts[i-1]:
-            frame_data.append(
-                go.Scatter(
-                    x=[sa_proposed[i-1, 0]],
-                    y=[sa_proposed[i-1, 1]],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
-        else:
-            # Empty trace to maintain consistency
-            frame_data.append(
-                go.Scatter(
-                    x=[],
-                    y=[],
-                    mode='markers',
-                    marker=dict(color='rgba(255, 0, 0, 0.5)', size=8, symbol='cross'),
-                    showlegend=False
-                )
-            )
-        
-        # Create frame with fixed trace indices (3 per subplot = 9 total)
+        # Create frame
         frames.append(
             go.Frame(
                 data=frame_data,
                 name=str(i - 1),
-                traces=list(range(9))  # Fixed number of traces (3 per subplot)
+                traces=[1, 2, 3, 4, 5, 6]
             )
+        )
+    
+    # Add initial points to the figure
+    for col, (samples, color_name) in enumerate(zip(
+        [mh_samples, gibbs_samples, sa_samples],
+        ['rgba(31, 119, 180, 0.8)', 'rgba(255, 127, 14, 0.8)', 'rgba(44, 160, 44, 0.8)']
+    ), 1):
+        fig.add_trace(
+            go.Scatter(
+                x=[samples[0, 0]],
+                y=[samples[0, 1]],
+                mode='markers',
+                marker=dict(color='red', size=10),
+                showlegend=False
+            ),
+            row=1, col=col
         )
     
     # Add frames to figure

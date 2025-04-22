@@ -116,7 +116,6 @@ if st.button("Run Simulation"):
     def run_with_progress(sampler, initial_state, n_iterations, progress_bar, status):
         samples = np.zeros((n_iterations + 1, len(initial_state)))
         accepts = np.zeros(n_iterations, dtype=bool)
-        proposed_samples = np.zeros((n_iterations, len(initial_state)))
         temperatures = np.zeros(n_iterations + 1) if hasattr(sampler, 'current_temp') else None
         
         samples[0] = initial_state
@@ -129,9 +128,6 @@ if st.button("Run Simulation"):
         
         for i in range(n_iterations):
             proposed_state = sampler.propose(samples[i])
-            # Store the proposed state regardless of acceptance
-            proposed_samples[i] = proposed_state
-            
             accepts[i] = sampler.accept(samples[i], proposed_state)
             
             if accepts[i]:
@@ -153,22 +149,22 @@ if st.button("Run Simulation"):
         status.text("Completed")
         
         if temperatures is not None:
-            return samples, accepts, proposed_samples, temperatures
+            return samples, accepts, temperatures
         else:
-            return samples, accepts, proposed_samples
+            return samples, accepts
     
     # Run the algorithms with progress updates
     mh_status.text("Starting...")
     mh_result = run_with_progress(mh, initial_state, n_iterations, mh_progress, mh_status)
-    mh_samples, mh_accepts, mh_proposed = mh_result[:3]
+    mh_samples, mh_accepts = mh_result
     
     gibbs_status.text("Starting...")
     gibbs_result = run_with_progress(gibbs, initial_state, n_iterations, gibbs_progress, gibbs_status)
-    gibbs_samples, gibbs_accepts, gibbs_proposed = gibbs_result[:3]
+    gibbs_samples, gibbs_accepts = gibbs_result
     
     sa_status.text("Starting...")
     sa_result = run_with_progress(sa, initial_state, n_iterations, sa_progress, sa_status)
-    sa_samples, sa_accepts, sa_proposed, sa_temps = sa_result
+    sa_samples, sa_accepts, sa_temps = sa_result
     
     visualization_status.info("Generating visualizations...")
     
@@ -214,7 +210,6 @@ if st.button("Run Simulation"):
         fig, 
         mh_samples, gibbs_samples, sa_samples,
         mh_accepts, gibbs_accepts, sa_accepts,
-        mh_proposed, gibbs_proposed, sa_proposed,
         trail_length
     )
     
