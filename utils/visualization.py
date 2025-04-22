@@ -147,7 +147,7 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                                  x=x_grid[0, :],
                                  y=y_grid[:, 0],
                                  colorscale='Viridis',
-                                 opacity=0.2,
+                                 opacity=0.4,
                                  showscale=False,
                                  contours=dict(
                                      showlabels=False,
