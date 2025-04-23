@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+poetry.lock
+pyproject.toml
 
 # Environment
 .env
@@ -18,6 +20,7 @@ Thumbs.db
 # Streamlit/Replit caches
 .streamlit/
 .replit/
+.replit
 
 # Logs
 *.log
