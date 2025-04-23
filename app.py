@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import pandas as pd
 from utils.distributions import BananaDistribution, BivariateGaussianDistribution
 from utils.mcmc_algorithms import MetropolisHastings, GibbsSampling, SimulatedAnnealing
 from utils.visualization import create_contour_plot, create_animation_frames, add_annotations
@@ -10,7 +9,7 @@ from utils.visualization import create_contour_plot, create_animation_frames, ad
 # Set page configuration
 st.set_page_config(
     page_title="MCMC Visualization",
-    page_icon="📊",
+    page_icon="generated-icon.png",
     layout="wide",
 )
 
