@@ -1,0 +1,6 @@
+# This file tells Git to map commit emails to your preferred identity
+# Format: Proper Name <commit-email> <author-email>
+# This will help attribute all past commits to you
+
+Rajdeep Naha <your-email@example.com> <noreply@replit.com>
+Rajdeep Naha <your-email@example.com> <noreply@github.com>
