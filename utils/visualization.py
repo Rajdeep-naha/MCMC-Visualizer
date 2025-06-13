@@ -174,7 +174,6 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
                       row=1,
                       col=col)
 
-    # Add frames to figure
     fig.frames = frames
 
     return frames
@@ -182,7 +181,21 @@ def create_animation_frames(fig, mh_samples, gibbs_samples, sa_samples,
 
 def add_annotations(fig):
     """
-    Add annotations to the figure.
+    Add informative annotations to the MCMC visualization figure.
+    
+    This function adds method-specific annotations to each subplot in the figure,
+    providing insights about the different MCMC algorithms being visualized.
+    
+    Parameters
+    ----------
+    fig : plotly.graph_objects.Figure
+        The Plotly figure object to which annotations will be added.
+        The figure should have three subplots (one for each MCMC method).
+        
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        The modified figure with added annotations.
     """
     # Add annotations for each method
     annotations = [
